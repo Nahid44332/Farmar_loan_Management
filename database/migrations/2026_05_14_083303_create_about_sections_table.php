@@ -12,11 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('about_sections', function (Blueprint $table) {
-            $table->id();
+             $table->id();
+
             $table->string('section_key')->unique();
             $table->string('title');
             $table->longText('description');
+
             $table->string('image')->nullable();
+
             $table->timestamps();
         });
     }

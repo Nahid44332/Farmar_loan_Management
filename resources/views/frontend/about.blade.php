@@ -408,102 +408,228 @@
       padding: 40px 15px;
    }
 }
+/* PERFECT CIRCLE IMAGE */
+
+.circle_image{
+    width:420px;
+    height:420px;
+    border-radius:50%;
+    object-fit:cover;
+    object-position:center;
+    border:8px solid #ffffff;
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.12),
+        0 8px 20px rgba(16,185,129,0.15);
+    transition:0.4s ease;
+    background:#f8fafc;
+}
+
+.circle_image:hover{
+    transform:scale(1.03);
+}
+
+/* Tablet */
+@media(max-width:991px){
+
+    .circle_image{
+        width:320px;
+        height:320px;
+    }
+
+}
+
+/* Mobile */
+@media(max-width:576px){
+
+    .circle_image{
+        width:240px;
+        height:240px;
+    }
+
+}
+.mission-img{
+    width: 450px !important;      /* চাইলে বাড়াও/কমাও */
+    height: 550px !important;     /* square রাখার জন্য */
+    object-fit: cover; /* image কাটবে কিন্তু সুন্দরভাবে ফিট হবে */
+    border-radius: 15px; /* গোল না চাইলে এটা কম/0 করে দাও */
+}
+
+.mission-img{
+    width: 100%;
+    max-width: 350px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.cta_section {
+    background-color: #83b100; /* স্ক্রিনশটের সেই নির্দিষ্ট সবুজ কালার */
+    padding: 80px 0;
+    text-align: center;
+    color: #1a1a1a; /* টেক্সট কালার কিছুটা ডার্ক */
+}
+
+.cta_section h2 {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.cta_section p {
+    font-size: 18px;
+    margin-bottom: 35px;
+    color: #333;
+}
+
+.btn_white_custom {
+    background-color: #ffffff;
+    color: #83b100; /* বাটনের লেখা সবুজ */
+    padding: 12px 45px;
+    border-radius: 50px; /* পিল শেপ বাটন */
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    border: none;
+}
+
+.btn_white_custom:hover {
+    background-color: #f8f9fa;
+    color: #6a8f00;
+    transform: translateY(-2px);
+}
 </style>
 
-    <!-- about sectuion start -->
-   <!-- 1, 2, 3: Who We Are, Mission, Vision (Redesigned) -->
-   <section class="section_padding bg-light">
-      <div class="container">
+   <!-- about section start -->
+<section class="section_padding bg-light">
+   <div class="container">
 
-         <!-- ১. আমরা কে? (লেখা বামে, ইমেজ ডানে) -->
-         <div class="row align-items-center mb-5">
-            <div class="col-md-6">
-               <div class="about_content_box">
-                  <h2 class="main_title text-left" style="text-align: left;">আমরা <span>কে?</span></h2>
-                  <p class="about_text">মুন ফার্ম অ্যান্ড কোম্পানি একটি আধুনিক কৃষি ও ল্যান্ডস্কেপিং সেবাদানকারী
-                     প্রতিষ্ঠান। আমরা কৃষকদের ভাগ্য উন্নয়নে কাজ করি। আমাদের দীর্ঘ অভিজ্ঞতা এবং দক্ষ টিম আপনাকে দিচ্ছে
-                     সেরা সেবার নিশ্চয়তা।</p>
-               </div>
+      <!-- WHO WE ARE -->
+      <div class="row align-items-center mb-5">
+
+         <div class="col-md-6">
+
+            <div class="about_content_box">
+
+               <h2 class="main_title text-left" style="text-align:left;">
+                  {{ $whoWeAre->title ?? '' }}
+               </h2>
+
+               <p class="about_text">
+                  {{ $whoWeAre->description ?? '' }}
+               </p>
+
             </div>
-            <div class="col-md-6 text-center">
-               <img src="{{asset('frontend/images/about.png')}}" alt="Who We Are" class="img-fluid rounded-circle shadow" style="width: 80%;">
-            </div>
+
          </div>
+<div class="col-md-6 text-center">
 
-         <hr style="margin: 50px 0; border-top: 1px dashed #ccc;">
+    <img src="{{ asset($whoWeAre->image ?? '') }}"
+         class="circle_image"
+         alt="Whoweare">
 
-         <!-- ২. আমাদের লক্ষ্য (ইমেজ বামে, লেখা ডানে) -->
-         <div class="row align-items-center mb-5 flex-md-row-reverse">
-            <div class="col-md-6">
-               <div class="about_content_box">
-                  <h2 class="main_title text-left" style="text-align: left;">আমাদের <span>লক্ষ্য</span></h2>
-                  <p class="about_text">প্রযুক্তিনির্ভর কৃষি ব্যবস্থা গড়ে তোলা এবং পরিবেশবান্ধব ল্যান্ডস্কেপিংয়ের
-                     মাধ্যমে প্রকৃতিকে সাজানোই আমাদের মূল লক্ষ্য। আমরা চাই প্রতিটি কৃষক যেন আধুনিক প্রযুক্তির সঠিক
-                     ব্যবহার করতে পারে।</p>
-               </div>
-            </div>
-            <div class="col-md-6 text-center">
-               <img src="{{asset('frontend/images/misson.avif')}}" alt="Our Mission" class="img-fluid rounded shadow" style="width: 80%;">
-            </div>
-         </div>
-
-         <hr style="margin: 50px 0; border-top: 1px dashed #ccc;">
-
-         <!-- ৩. ভবিষ্যৎ পরিকল্পনা (লেখা বামে, ইমেজ ডানে) -->
-         <div class="row align-items-center">
-            <div class="col-md-6">
-               <div class="about_content_box">
-                  <h2 class="main_title text-left" style="text-align: left;">ভবিষ্যৎ <span>পরিকল্পনা</span></h2>
-                  <p class="about_text">আগামী ৫ বছরের মধ্যে আমরা সারা দেশে স্মার্ট ফার্মিং এবং উন্নত সেচ ব্যবস্থা পৌঁছে
-                     দিতে চাই। আমরা স্বপ্ন দেখি এমন একটি বাংলাদেশের, যেখানে কৃষি হবে লাভজনক এবং প্রযুক্তি নির্ভর।</p>
-               </div>
-            </div>
-            <div class="col-md-6 text-center">
-               <img src="{{asset('frontend/images/smart_farming.jpg')}}" alt="Future Plan" class="img-fluid rounded-circle shadow"
-                  style="width: 80%;">
-            </div>
-         </div>
+</div>
+        
 
       </div>
-   </section>
+
+      <hr style="margin:50px 0; border-top:1px dashed #ccc;">
+
+      <!-- MISSION -->
+      <div class="row align-items-center mb-5 flex-md-row-reverse">
+
+         <div class="col-md-6">
+
+            <div class="about_content_box">
+
+               <h2 class="main_title text-left" style="text-align:left;">
+                  {{ $mission->title ?? '' }}
+               </h2>
+
+               <p class="about_text">
+                  {{ $mission->description ?? '' }}
+               </p>
+
+            </div>
+
+         </div>
+
+        <div class="col-md-6 text-center">
+
+    <div class="col-md-6 text-center">
+    <img src="{{ asset($mission->image ?? '') }}" class="mission-img img-fluid shadow">
+</div>
+
+</div>
+
+      </div>
+
+      <hr style="margin:50px 0; border-top:1px dashed #ccc;">
+
+      <!-- FUTURE PLAN -->
+      <div class="row align-items-center">
+
+         <div class="col-md-6">
+
+            <div class="about_content_box">
+
+               <h2 class="main_title text-left" style="text-align:left;">
+                  {{ $futurePlan->title ?? '' }}
+               </h2>
+
+               <p class="about_text">
+                  {{ $futurePlan->description ?? '' }}
+               </p>
+
+            </div>
+
+         </div>
+<div class="col-md-6 text-center">
+
+    <img src="{{ asset($futurePlan->image ?? '') }}"
+         class="circle_image"
+         alt="Feature">
+
+</div>
+         
+
+      </div>
+
+   </div>
+</section>
    <!-- 4: What We Do / Services -->
-   <section class="section_padding">
-      <div class="container">
-         <h2 class="main_title">আমরা কী <span>সেবা দিই</span></h2>
-         <div class="row">
-            <!-- সার্ভিস ১ -->
-            <div class="col-md-4">
-               <div class="service_card">
-                  <img src="{{asset('frontend/images/img-1.png')}}" alt="Icon">
-                  <h4>কৃষি পরামর্শ</h4>
-                  <p>উন্নত চাষাবাদ এবং ফসল রক্ষায় আমাদের বিশেষজ্ঞরা পরামর্শ দিয়ে থাকেন।</p>
-                  <a href="service.html" class="btn_service">বিস্তারিত দেখুন</a>
-               </div>
-            </div>
-            <!-- সার্ভিস ২ -->
-            <div class="col-md-4">
-               <div class="service_card">
-                  <img src="{{asset('frontend/images/img-2.png')}}" alt="Icon">
-                  <h4>ল্যান্ডস্কেপিং</h4>
-                  <p>আপনার বাগান বা প্রজেক্টকে আধুনিক ডিজাইনে সাজিয়ে তোলার দায়িত্ব আমাদের।</p>
-                  <a href="service.html" class="btn_service">বিস্তারিত দেখুন</a>
-               </div>
-            </div>
-            <!-- সার্ভিস ৩ -->
-            <div class="col-md-4">
-               <div class="service_card">
-                  <img src="{{asset('frontend/images/img-3.png')}}" alt="Icon">
-                  <h4>স্মার্ট সেচ ব্যবস্থা</h4>
-                  <p>অল্প পানিতে অধিক ফলনের জন্য আমরা স্বয়ংক্রিয় সেচ প্রযুক্তি সরবরাহ করি দায়িত্ব আমাদের।</p>
-                  <a href="service.html" class="btn_service">বিস্তারিত দেখুন</a>
-               </div>
-            </div>
-         </div>
-      </div>
-   </section>
+<section class="section_padding">
+    <div class="container">
+        <h2 class="main_title">আমরা কী <span>সেবা দিই</span></h2>
+        <div class="row">
+            
+            @if($sebas->count() > 0)
+                @foreach($sebas as $seba)
+                <div class="col-md-4 mb-4">
+                    <div class="service_card">
+                        <img src="{{ asset('sebas/' . $seba->image) }}" alt="{{ $seba->title }}">
+                        
+                        <h4>{{ $seba->title }}</h4>
+                        <p>{{ Str::limit($seba->description, 100) }}</p>
+                        
+                        <a href="{{ $seba->button_link ?? '#' }}" class="btn_service">
+                            বিস্তারিত দেখুন
+                        </a>
+                    </div>
+                </div>
+                @endforeach
+            @else
+                <p class="text-center">আপাতত কোনো সেবা পাওয়া যায়নি।</p>
+            @endif
+
+        </div>
+    </div>
+</section>
 
    <!-- 5: Team Section -->
-    <section class="section_padding bg-light text-center">
+  <section class="section_padding bg-light text-center">
     <div class="container">
         <h2 class="main_title">আমাদের <span>টিম</span></h2>
         <div class="row mt-5">
@@ -576,9 +702,10 @@
 
    <!-- 8: Testimonial -->
    <section class="section_padding bg-light">
-      <div class="container text-center">
-         <h2 class="main_title">ক্লায়েন্টদের <span>মতামত</span></h2>
-         <div class="row mt-4">
+    <div class="container text-center">
+        <h2 class="main_title">ক্লায়েন্টদের <span>মতামত</span></h2>
+        
+        <div class="row mt-4">
             @forelse($testimonials as $testi)
                 <div class="col-md-6 mx-auto mb-4">
                     <div class="testi_card" style="background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
@@ -596,10 +723,10 @@
                 </div>
             @endforelse
         </div>
-      </div>
-   </section>
+    </div>
+</section>
 
-    <!-- 9: Call to Action -->
+   <!-- 9: Call to Action -->
 @if($cta)
 <section class="cta_section mb-5">
     <div class="container">
@@ -607,8 +734,8 @@
             <div class="col-md-10 mx-auto">
                 <h2>{{ $cta->title }}</h2>
                 <p>{{ $cta->description }}</p>
-               <a href="{{ $cta->button_link }}" target="_blank" class="btn_white_custom btn btn-primary">
-                    <i class="fa fa-phone"> {{ $cta->button_text }} </i>
+                <a href="{{ $cta->button_link }}" class="btn_white_custom">
+                    {{ $cta->button_text }}
                 </a>
             </div>
         </div>

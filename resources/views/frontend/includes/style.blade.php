@@ -285,7 +285,7 @@
 
      .blog_img {
          /* আপনার নতুন ছবির পাথ এখানে দিন */
-         background-image: url('/frontend/images/banner-bg.png');
+         /* background-image: url('/frontend/images/banner-bg.png'); */
 
          background-size: cover;
          background-position: center;
@@ -316,15 +316,53 @@
      }
 
      /* --- ১. ব্যানার সেকশন ঠিক করার জন্য --- */
-     .banner_section {
-         background-image: url("/frontend/images/banner - Copy.jpg");
-         /* আপনার ছবির নাম ঠিক করে দিন */
+     /* .banner_section {
+         background-image: ;
+       
          background-size: cover;
          background-position: center;
          padding: 120px 0 150px 0;
          min-height: 20vh;
-     }
+     } */
+.banner_section{
+    padding:0 !important;
+    margin:0 !important;
+    overflow:hidden;
+}
 
+.slide-wrapper{
+    padding:0 !important;
+    margin:0 !important;
+    overflow:hidden;
+}
+
+#myCarousel,
+.carousel-inner,
+.carousel-item{
+    background:transparent !important;
+}
+
+.carousel-item{
+    overflow:hidden;
+}
+
+.banner_dynamic_area{
+    width:100%;
+    min-height:700px;
+    background-size:cover !important;
+    background-position:center !important;
+    background-repeat:no-repeat !important;
+    display:flex;
+    align-items:center;
+    position:relative;
+}
+
+/* VERY IMPORTANT FIX */
+.carousel-item-next,
+.carousel-item-prev,
+.carousel-item.active{
+    display:block;
+}
      /* --- ২. CTA বক্স (আপনার পছন্দের ডার্ক কালার #2D393B) --- */
      .custom-cta-box {
          background-color: #2D393B !important;
@@ -773,4 +811,233 @@
              margin-bottom: 10px;
          }
      }
+     /* ================= CONTACT PAGE RESPONSIVE ================= */
+    /* Tablet */
+    @media (max-width: 991px) {
+        .contact_section {
+            padding: 60px 0;
+        }
+        .contact_taital {
+            font-size: 32px;
+            text-align: center;
+        }
+        .mail_section {
+            padding: 30px;
+        }
+        .btn_main {
+            text-align: center;
+        }
+    }
+
+    /* Mobile */
+    @media (max-width: 767px) {
+        .contact_taital {
+            font-size: 26px;
+        }
+        .mail_section {
+            padding: 25px 20px;
+            border-radius: 15px;
+        }
+        .mail_text,
+        .massage-bt {
+            font-size: 14px;
+            padding: 12px 15px;
+        }
+        .massage-bt {
+            height: 100px !important; /* মোবাইল স্ক্রিনে মেসেজ বক্সের হাইট */
+        }
+        .send_bt button {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+    }
+
+    /* Small Mobile */
+    @media (max-width: 480px) {
+        .contact_taital {
+            font-size: 22px;
+        }
+        .mail_section {
+            padding: 20px 15px;
+        }
+        .mail_text,
+        .massage-bt {
+            font-size: 13px;
+        }
+        .footer_section_2 {
+            text-align: center;
+        }
+        .social_icon ul {
+            justify-content: center;
+        }
+    }
+
+    /* ================= MAIN STYLE ================= */
+    .header_section {
+        background-image: url('images/banner.jpg') !important; 
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding: 15px 0;
+        width: 100%;
+        z-index: 999;
+    }
+
+    .contact_section {
+        background-image: url('/frontend/images/contact-bg.png'); 
+        background-repeat: no-repeat;    
+    }
+
+    /* Contact Form Wrapper Styling */
+    .mail_section {
+       border: 2px solid #85A900;
+       padding: 40px;
+       border-radius: 20px;
+       background-color: #ffffff;
+       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+       transition: all 0.3s ease;
+    }
+
+    .mail_section:hover {
+       border-color: #2D393B;
+       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ================= INPUTS & TEXTAREA UNIFORM DESIGN ================= */
+    /* সব ইনপুট ফিল্ড এবং মেসেজ বক্সের সাইজ, কোণা এবং ফন্ট কালার সমান রাখার জন্য */
+    .mail_text, 
+    .massage-bt {
+        border-radius: 12px !important; /* সব ইনপুটের কোণা সমান ১২px গোল থাকবে */
+        padding: 15px 20px;   
+        border: 1px solid #ddd; 
+        margin-bottom: 20px;    
+        width: 100%;
+        font-family: inherit;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+        
+        /* 🎨 ইনপুটে লেখার ফন্ট কালার কুচকুচে কালো করার জন্য */
+        color: #000000 !important; 
+        font-weight: 500; /* লেখা যেন স্পষ্ট ও সুন্দর দেখায় */
+    }
+
+    /* প্লেসহোল্ডারের (Placeholder) টেক্সট কালার কিছুটা হালকা রাখার জন্য (ঐচ্ছিক কিন্তু স্ট্যান্ডার্ড) */
+    .mail_text::placeholder,
+    .massage-bt::placeholder {
+        color: #999999 !important;
+        font-weight: normal;
+    }
+
+    /* ইনপুট ফিল্ডের নির্দিষ্ট হাইট */
+    .mail_text {
+        height: 54px;
+    }
+
+    /* মেসেজ বক্স বা টেক্সট এরিয়ার কাস্টম ডিজাইন */
+    .massage-bt {
+        height: 120px;          /* মেসেজ লেখার জন্য পর্যাপ্ত হাইট */
+        resize: vertical;       /* ইউজার টেনে শুধু নিচের দিকে বড় করতে পারবে */
+        overflow-y: auto;       /* লেখা বেশি হলে ভেতরে স্ক্রল হবে */
+    }
+
+    /* হোভার ইফেক্ট */
+    .mail_text:hover, 
+    .massage-bt:hover {
+        border-color: #85A900;
+        border-radius: 12px !important;
+    }
+
+    /* ফোকাস ইফেক্ট (ক্লিক করে লেখার সময় বর্ডার এবং গ্লো ইফেক্ট) */
+    .mail_text:focus, 
+    .massage-bt:focus {
+        outline: none !important;          
+        border: 2px solid #85A900 !important; 
+        box-shadow: 0 0 8px rgba(133, 169, 0, 0.3); 
+        border-radius: 12px !important;
+        color: #000000 !important; /* ফোকাস অবস্থাতেও কালো থাকবে */
+    }
+
+    /* সাবমিট বাটনের কাস্টম ডিজাইন */
+    .send_bt button {
+        background-color: #85A900;
+        color: #fff;
+        padding: 12px 40px;
+        font-size: 16px;
+        border-radius: 25px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    
+    .send_bt button:hover {
+        background-color: #2D393B;
+    }
+    /* =========================
+    TESTIMONIAL SECTION
+========================= */
+
+.testimonial_card{
+    background:#fff;
+    padding:40px 30px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    transition:0.4s;
+    height:100%;
+
+ 
+}
+
+.testimonial_card:hover{
+    transform:translateY(-10px);
+}
+
+.active_testimonial{
+    background:#2f3e46;
+    color:#fff;
+
+}
+
+.client_img_area{
+    width:90px;
+    height:90px;
+    margin:auto;
+    margin-bottom:20px;
+}
+
+.client_img_area img{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.client_name{
+    font-size:24px;
+    font-weight:700;
+    margin-bottom:5px;
+    color:#222;
+}
+
+/* ACTIVE CARD NAME WHITE */
+.active_testimonial .client_name{
+    color:#fff;
+}
+
+.client_designation{
+    color:#94c11f;
+    font-weight:600;
+    margin-bottom:20px;
+}
+
+.active_testimonial .client_designation{
+    color:#b5ff00;
+}
+
+.client_review{
+    font-size:15px;
+    line-height:28px;
+}
  </style>

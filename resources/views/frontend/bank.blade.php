@@ -215,6 +215,19 @@
                 <h2 style="font-weight: 700; color: #333;">ব্যাংক পেমেন্ট নির্বাচন করুন</h2>
                 <p style="color: #666;">আপনার পছন্দসই ব্যাংকের ওপর ক্লিক করে পেমেন্ট সম্পন্ন করুন</p>
             </div>
+
+            @if(session('success'))
+                 <div style="max-width: 600px; margin: 0 auto 20px auto; color: green; background: #e6f4ea; padding: 15px; border-radius: 10px; font-weight: bold; text-align: center; border: 1px solid #34a853;">
+                     {{ session('success') }}
+                 </div>
+            @endif
+
+            @if($errors->any())
+                 <div style="max-width: 600px; margin: 0 auto 20px auto; color: red; background: #fce8e6; padding: 15px; border-radius: 10px; font-weight: bold; text-align: center; border: 1px solid #ea4335;">
+                     {{ $errors->first() }}
+                 </div>
+            @endif
+
             <div class="row">
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <div class="bank-card" onclick="openPaymentModal('Dutch-Bangla Bank')">
@@ -301,7 +314,7 @@
                 </div>
 
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="bank-card" onclick="openPaymentModal('SIBL')">
+                    <div class="bank-card" onclick="openPaymentModal('SIBL Bank')">
                         <img src="{{asset('frontend/images/sibl_bank.png')}}" alt="SIBL">
                         <h5>SIBL Bank</h5>
                     </div>
@@ -366,27 +379,30 @@
                 <span class="close-modal" onclick="closePaymentModal()">&times;</span>
             </div>
             <div class="modal-body-bank">
-                <form action="" method="POST">
+                <form action="{{ route('bank.payment.submit') }}" method="POST">
                     @csrf
+                    
+                    <input type="hidden" name="bank_name" id="bankNameInput">
+
                     <div class="form-group mb-3">
                         <label>আপনার নাম</label>
-                        <input type="text" name="name" class="bank-input" placeholder="পুরো নাম লিখুন" required>
+                        <input type="text" name="name" class="bank-input" placeholder="পুরো নাম লিখুন" value="{{ old('name') }}" required>
                     </div>
                     <div class="form-group mb-3">
                         <label>ঠিকানা</label>
-                        <input type="text" name="address" class="bank-input" placeholder="আপনার ঠিকানা লিখুন" required>
+                        <input type="text" name="address" class="bank-input" placeholder="আপনার ঠিকানা লিখুন" value="{{ old('address') }}" required>
                     </div>
                     <div class="form-group mb-3">
                         <label>ফোন নম্বর</label>
-                        <input type="text" name="phone" class="bank-input" placeholder="01XXXXXXXXX" required>
+                        <input type="text" name="phone" class="bank-input" placeholder="01XXXXXXXXX" value="{{ old('phone') }}" required>
                     </div>
                     <div class="form-group mb-3">
                         <label>টাকার পরিমাণ (Amount)</label>
-                        <input type="number" name="amount" class="bank-input" placeholder="৳ ০.০০" required>
+                        <input type="number" name="amount" class="bank-input" placeholder="৳ ০.০০" value="{{ old('amount') }}" required>
                     </div>
                     <div class="form-group mb-3">
                         <label>ব্যাংক অ্যাকাউন্ট / ট্রানজেকশন আইডি</label>
-                        <input type="text" name="transaction_id" class="bank-input" placeholder="আইডি বা অ্যাকাউন্ট নম্বর দিন" required>
+                        <input type="text" name="transaction_id" class="bank-input" placeholder="আইডি বা অ্যাকাউন্ট নম্বর দিন" value="{{ old('transaction_id') }}" required>
                     </div>
                     <button type="submit" class="btn-confirm-bank">পেমেন্ট নিশ্চিত করুন</button>
                 </form>
@@ -397,6 +413,10 @@
     <script>
         function openPaymentModal(bankName) {
             document.getElementById('selectedBankName').innerText = bankName + " পেমেন্ট";
+            
+            // 🎯 জাভাস্ক্রিপ্ট দিয়ে ব্যাংকের নাম হিডেন ইনপুটে সেট করা হচ্ছে
+            document.getElementById('bankNameInput').value = bankName; 
+            
             document.getElementById('paymentModal').style.display = "block";
             document.body.style.overflow = 'hidden'; 
         }

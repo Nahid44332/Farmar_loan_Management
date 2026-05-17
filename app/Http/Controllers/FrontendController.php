@@ -2,36 +2,69 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AboutSection;
 use App\Models\Achievement;
+use App\Models\Banner;
+use App\Models\Counter;
 use App\Models\CTA;
 use App\Models\Farmer;
+use App\Models\FooterSetting;
+use App\Models\Investor;
+use App\Models\Seba;
 use App\Models\Service;
 use App\Models\Team;
 use App\Models\Testimonial;
 use App\Models\WhyChoose;
+use App\Models\Work;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
+
 
 class FrontendController extends Controller
 {
    public function index()
    {
-    return view('frontend.index');
+    $banners = Banner::orderBy('id','asc')->get();
+   $counters = Counter::all();
+   $sections = AboutSection::all()->keyBy('section_key');
+           $sebas = Seba::all();
+ $footer = FooterSetting::first();
+ $work = Work::first();
+ $testimonials = Testimonial::latest()->get();
+
+
+    return view('frontend.index', compact('banners', 'counters','sections', 'work',
+            'sebas','footer','testimonials'));
    }
 
    public function aboutUs()
-   {
-    $teams = Team::latest()->get();
-    $achievements = Achievement::all();
-    $why_chooses = WhyChoose::all();
-    $testimonials = Testimonial::latest()->get();
-     $cta = CTA::first();
-    return view('frontend.about', compact('teams',
-     'achievements',
-     'why_chooses',
-     'testimonials',
-     'cta'));
-   }
+    {
+        $whoWeAre = AboutSection::where('section_key', 'who_we_are')->first();
+        $mission = AboutSection::where('section_key', 'mission')->first();
+        $futurePlan = AboutSection::where('section_key', 'future_plan')->first();
+        $services = Service::latest()->get();
+        $sebas = Seba::all();
+        $teams = Team::latest()->get();
+        $achievements = Achievement::all();
+        $why_chooses = WhyChoose::all();
+        $testimonials = Testimonial::latest()->get();
+        $cta = CTA::first();
+        return view('frontend.about', compact(
+            'whoWeAre',
+            'mission',
+            'futurePlan',
+            'services',
+            'sebas',
+            'teams',
+            'achievements',
+            'why_chooses',
+            'testimonials',
+            'cta'
+
+        ));
+    }
+
    public function farmer()
    {
          $farmers = Farmer::where('status','approved')
@@ -101,10 +134,61 @@ class FrontendController extends Controller
    {
     return view('frontend.cow-loan');
    }
-   public function invesment()
-   {
-    return view('frontend.invesment');
-   }
+  public function invesment()
+    {
+        return view('frontend.invesment');
+    }
+
+    public function registered(Request $request) 
+    {
+        // ১. ভ্যালিডেশন
+        $request->validate([
+            'first_name'       => 'required|string|max:255',
+            'last_name'        => 'required|string|max:255',
+            'email'            => 'required|string|email|max:255|unique:investors,email',
+            'phone'            => 'required|string|max:20',
+            'investment_range' => 'required|string',
+            'nid_front'        => 'required|image|mimes:jpeg,png,jpg|max:2048', // সর্বোচ্চ ২ মেগাবাইট
+            'nid_back'         => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'password'         => 'required|string|min:6',
+        ]);
+
+        // ২. নতুন ইনভেস্টর অবজেক্ট তৈরি
+        $investor = new Investor();
+        $investor->first_name       = $request->first_name;
+        $investor->last_name        = $request->last_name;
+        $investor->email            = $request->email;
+        $investor->phone            = $request->phone;
+        $investor->investment_range = $request->investment_range;
+        $investor->password         = Hash::make($request->password); // পাসওয়ার্ড হ্যাশ করা
+        $investor->status           = 'pending'; // ডিফল্ট স্ট্যাটাস পেন্ডিং থাকবে
+
+
+        $uploadPath = public_path('uploads/investors');
+        if (!File::isDirectory($uploadPath)) {
+            File::makeDirectory($uploadPath, 0777, true, true);
+        }
+
+        if ($request->hasFile('nid_front')) {
+            $file = $request->file('nid_front');
+            $filename = 'nid_front_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move($uploadPath, $filename);
+            $investor->nid_front = $filename;
+        }
+
+
+        if ($request->hasFile('nid_back')) {
+            $file = $request->file('nid_back');
+            $filename = 'nid_back_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move($uploadPath, $filename);
+            $investor->nid_back = $filename;
+        }
+
+        $investor->save();
+
+
+        return back()->with('success', 'Your investor application has been submitted and is pending approval.');
+    }
    public function agent()
    {
     return view('frontend.agent');

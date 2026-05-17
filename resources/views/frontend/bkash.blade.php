@@ -147,7 +147,7 @@
       </style>
 
 <!-- কার্ড সেকশন -->
-      <div class="payment_main_container">
+     <div class="payment_main_container">
          <div class="container">
             <div class="bkash-card">
                <div class="bkash-head">
@@ -155,42 +155,46 @@
                </div>
                <div class="bkash-body">
                  
+                 @if(session('success'))
+                     <div class="alert alert-success" style="color: green; background: #e6f4ea; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px;">
+                         {{ session('success') }}
+                     </div>
+                 @endif
 
-                 <form action="" method="POST">
-  <!-- লারাভেলের নিরাপত্তা টোকেন -->
+                 @if($errors->any())
+                     <div class="alert alert-danger" style="color: red; background: #fce8e6; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px;">
+                         {{ $errors->first() }}
+                     </div>
+                 @endif
 
-    <!-- ১. নাম -->
-    <div class="form-group">
-        <label>আপনার নাম</label>
-        <input type="text" name="name" class="form-input" placeholder="পুরো নাম লিখুন" required>
-    </div>
+                 <form action="{{ route('bkash.payment.submit') }}" method="POST">
+                    @csrf <div class="form-group">
+                        <label>আপনার নাম</label>
+                        <input type="text" name="name" class="form-input" placeholder="পুরো নাম লিখুন" value="{{ old('name') }}" required>
+                    </div>
 
-    <!-- ২. ঠিকানা -->
-    <div class="form-group">
-        <label>আপনার ঠিকানা</label>
-        <input type="text" name="address" class="form-input" placeholder="গ্রাম/শহর, জেলা" required>
-    </div>
+                    <div class="form-group">
+                        <label>আপনার ঠিকানা</label>
+                        <input type="text" name="address" class="form-input" placeholder="গ্রাম/শহর, জেলা" value="{{ old('address') }}" required>
+                    </div>
 
-    <!-- ৩. বিকাশ নম্বর -->
-    <div class="form-group">
-        <label>বিকাশ নম্বর (যেখান থেকে টাকা পাঠিয়েছেন)</label>
-        <input type="text" name="phone" class="form-input" placeholder="017XXXXXXXX" required>
-    </div>
+                    <div class="form-group">
+                        <label>বিকাশ নম্বর (যেখান থেকে টাকা পাঠিয়েছেন)</label>
+                        <input type="text" name="phone" class="form-input" placeholder="017XXXXXXXX" value="{{ old('phone') }}" required>
+                    </div>
 
-    <!-- ৪. অ্যামাউন্ট বা টাকার পরিমাণ -->
-    <div class="form-group">
-        <label>টাকার পরিমাণ (Amount)</label>
-        <input type="number" name="amount" class="form-input" placeholder="কত টাকা পাঠিয়েছেন" required>
-    </div>
+                    <div class="form-group">
+                        <label>টাকার পরিমাণ (Amount)</label>
+                        <input type="number" name="amount" class="form-input" placeholder="কত টাকা পাঠিয়েছেন" value="{{ old('amount') }}" required>
+                    </div>
 
-    <!-- ৫. ট্রানজেকশন আইডি -->
-    <div class="form-group">
-        <label>ট্রানজেকশন আইডি (TrxID)</label>
-        <input type="text" name="transaction_id" class="form-input" placeholder="TrxID এখানে দিন" required>
-    </div>
+                    <div class="form-group">
+                        <label>ট্রানজেকশন আইডি (TrxID)</label>
+                        <input type="text" name="transaction_id" class="form-input" placeholder="TrxID এখানে দিন" value="{{ old('transaction_id') }}" required>
+                    </div>
 
-    <button type="submit" class="btn-submit">পেমেন্ট নিশ্চিত করুন</button>
-</form>
+                    <button type="submit" class="btn-submit">পেমেন্ট নিশ্চিত করুন</button>
+                 </form>
                </div>
             </div>
          </div>

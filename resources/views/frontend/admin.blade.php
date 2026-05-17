@@ -216,40 +216,43 @@
 
 <!-- Admin Portal Section Start -->
       <div class="admin_section layout_padding">
-         <div class="container">
-            <div class="row justify-content-center">
-               <div class="col-md-6">
-                  <div class="admin_login_card">
-                     <div class="admin_icon"><i class="fa fa-user-circle-o"></i></div>
-                     <h1 class="admin_taital">Admin Login</h1>
-                     <p class="admin_text">Please enter your credentials to access the management dashboard.</p>
-                     
-                     <form action="#" class="admin_form ">
-                        <div class="form-group">
-                           <div class="input_group">
-                              <span class="input_icon"><i class="fa fa-envelope"></i></span>
-                              <input type="email" class="form-control admin_input" placeholder="Admin Email" required>
-                           </div>
-                        </div>
-                        <div class="form-group">
-                           <div class="input_group">
-                              <span class="input_icon"><i class="fa fa-lock"></i></span>
-                              <input type="password" class="form-control admin_input" placeholder="Password" required>
-                           </div>
-                        </div>
-                        <div class="remember_box">
-                           <label><input type="checkbox"> Remember Me</label>
-                           <a href="#" class="forgot_pw">Forgot Password?</a>
-                        </div>
-                        <div class="btn_main">
-                           <button type="submit" class="admin_btn">Login to Dashboard</button>
-                        </div>
-                     </form>
+   <div class="container">
+      <div class="row justify-content-center">
+         <div class="col-md-6">
+            <div class="admin_login_card">
+               <div class="admin_icon"><i class="fa fa-user-circle-o"></i></div>
+               <h1 class="admin_taital">Admin Login</h1>
+               <p class="admin_text">Please enter your credentials to access the management dashboard.</p>
+               
+               @if($errors->any())
+                  <div class="alert alert-danger" style="color: #dc3545; background-color: #f8d7da; border-color: #f5c6cb; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px;">
+                     {{ $errors->first() }}
                   </div>
-               </div>
+               @endif
+
+               <form action="{{ route('admin.login.submit') }}" method="POST" class="admin_form">
+                  @csrf <div class="form-group">
+                     <div class="input_group">
+                        <span class="input_icon"><i class="fa fa-envelope"></i></span>
+                        <input type="email" name="email" class="form-control admin_input" placeholder="Admin Email" value="{{ old('email') }}" required>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <div class="input_group">
+                        <span class="input_icon"><i class="fa fa-lock"></i></span>
+                        <input type="password" name="password" class="form-control admin_input" placeholder="Password" required>
+                     </div>
+                  </div>
+                  
+                  <div class="btn_main">
+                     <button type="submit" class="admin_btn">Login to Dashboard</button>
+                  </div>
+               </form>
             </div>
          </div>
       </div>
+   </div>
+</div>
       <!-- Admin Portal Section End -->
 
 @endsection

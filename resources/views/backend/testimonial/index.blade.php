@@ -29,6 +29,11 @@
 
     .quote_icon { font-size: 40px; color: #fef3c7; position: absolute; top: 15px; right: 25px; }
     
+    /* 📸 ইমেজ ও টেক্সট পাশাপাশি সুন্দরভাবে দেখানোর জন্য নতুন বাডি স্টাইল */
+    .client_header { display: flex; align-items: center; gap: 15px; margin-bottom: 5px; }
+    .client_img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid #f59e0b; }
+    .client_avatar_placeholder { width: 55px; height: 55px; border-radius: 50%; background: #f3f4f6; display: flex; align-items: center; justify-content: center; border: 2px solid #e5e7eb; color: #9ca3af; font-size: 24px; }
+    
     .client_info h5 { font-weight: 800; color: #111827; margin-bottom: 2px; }
     .client_info span { font-size: 13px; color: #f59e0b; font-weight: 600; text-transform: uppercase; }
     
@@ -52,9 +57,18 @@
         @forelse($testimonials as $item)
             <div class="testi_card">
                 <div class="quote_icon">"</div>
-                <div class="client_info">
-                    <h5>{{ $item->name }}</h5>
-                    <span>{{ $item->designation }}</span>
+                
+                <div class="client_header">
+                    @if($item->image && file_exists(public_path($item->image)))
+                        <img src="{{ asset($item->image) }}" class="client_img" alt="{{ $item->name }}">
+                    @else
+                        <div class="client_avatar_placeholder">👤</div>
+                    @endif
+                    
+                    <div class="client_info">
+                        <h5>{{ $item->name }}</h5>
+                        <span>{{ $item->designation }}</span>
+                    </div>
                 </div>
                 
                 <p class="comment_text">
@@ -74,7 +88,7 @@
                             <h5 class="fw-bold">Edit Feedback</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
-                        <form action="{{ route('testimonial.update', $item->id) }}" method="POST">
+                        <form action="{{ route('testimonial.update', $item->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="modal-body">
                                 <div class="mb-3">
@@ -84,6 +98,16 @@
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Designation</label>
                                     <input type="text" name="designation" class="form-control" value="{{ $item->designation }}">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Client Image</label>
+                                    <input type="file" name="image" class="form-control" accept="image/*">
+                                    @if($item->image)
+                                        <div class="mt-2">
+                                            <small class="text-muted d-block mb-1">Current Image:</small>
+                                            <img src="{{ asset($item->image) }}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Comment</label>
@@ -112,7 +136,7 @@
                 <h5 class="fw-bold">Add New Feedback</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form action="{{ route('testimonial.store') }}" method="POST">
+            <form action="{{ route('testimonial.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
@@ -122,6 +146,10 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">Designation</label>
                         <input type="text" name="designation" class="form-control" placeholder="e.g. Farmer">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Client Image</label>
+                        <input type="file" name="image" class="form-control" accept="image/*">
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Comment</label>
@@ -137,5 +165,4 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 @endsection
