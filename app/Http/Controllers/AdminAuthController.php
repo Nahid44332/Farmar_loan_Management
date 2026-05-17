@@ -7,14 +7,39 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminAuthController extends Controller
 {
-      public function loginForm()
+       // LOGIN PAGE
+    public function loginForm()
     {
         return view('backend.auth.login');
     }
 
-     public function logOut(){
-        Auth::logout();
-        return redirect('/');
+    // LOGIN SUBMIT
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials)) {
+
+            $request->session()->regenerate();
+
+            return redirect()->route('admin.dashboard');
+        }
+
+        return back()->with('error', 'Invalid email or password');
     }
 
+    // LOGOUT
+    public function logOut()
+    {
+        Auth::logout();
+
+        return redirect('/admin');
+    }
 }
+
+   
+
+

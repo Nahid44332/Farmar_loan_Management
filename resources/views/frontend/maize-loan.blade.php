@@ -233,7 +233,7 @@
                   <p>{{$maize->desc_two}}</p>
                </div>
                <div class="col-md-6">
-                  <div class="about_img"><img src="{{asset($maize->image)}}" alt="Maize"></div>
+                  <div class="about_img"><img src="{{asset('backend/images/service/'.$maize->image)}}" alt="Maize"></div>
                </div>
             </div>
          </div>

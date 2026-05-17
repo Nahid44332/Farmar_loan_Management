@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('testimonials', function (Blueprint $table) {
+        Schema::create('sebas', function (Blueprint $table) {
             $table->id();
-            $table->text('comment'); // ক্লায়েন্টের মতামত
-            $table->string('name');   // ক্লায়েন্টের নাম
-            $table->string('designation')->nullable(); // পদবি (যেমন: খামারি)
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
+            $table->string('button_link')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('testimonials');
+        Schema::dropIfExists('sebas');
     }
 };

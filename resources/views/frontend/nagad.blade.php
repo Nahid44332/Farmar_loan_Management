@@ -164,36 +164,41 @@
 
 
 
-    <div class="nagad_main_container">
+   <div class="nagad_main_container">
     <div class="container">
         <div class="nagad-card">
-          <div class="nagad-head" style="background: #f7941d; padding: 25px; text-align: center;">
-    <!-- Laravel asset helper ব্যবহার করে ইমেজ কল করা -->
-    <img src="{{asset('frontend/images/nagad.svg')}}" 
-         alt="Nagad" 
-         style="width: 140px !important; height: auto !important;">
-</div>
+            <div class="nagad-head" style="background: #f7941d; padding: 25px; text-align: center;">
+                <img src="{{asset('frontend/images/nagad.svg')}}" alt="Nagad" style="width: 140px !important; height: auto !important;">
+            </div>
 
             <div class="nagad-body">
-                
+                @if(session('success'))
+                     <div class="alert alert-success" style="color: green; background: #e6f4ea; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px;">
+                         {{ session('success') }}
+                     </div>
+                @endif
 
-                <form action="" method="POST">
-               
-                    
-                    <label class="nagad-label">আপনার নাম</label>
-                    <input type="text" name="name" class="form-input-nagad" placeholder="পুরো নাম লিখুন" required>
+                @if($errors->any())
+                     <div class="alert alert-danger" style="color: red; background: #fce8e6; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px;">
+                         {{ $errors->first() }}
+                     </div>
+                @endif
+
+                <form action="{{ route('nagad.payment.submit') }}" method="POST">
+                    @csrf <label class="nagad-label">আপনার নাম</label>
+                    <input type="text" name="name" class="form-input-nagad" placeholder="পুরো নাম লিখুন" value="{{ old('name') }}" required>
 
                     <label class="nagad-label">আপনার ঠিকানা</label>
-                    <input type="text" name="address" class="form-input-nagad" placeholder="গ্রাম/শহর, জেলা" required>
+                    <input type="text" name="address" class="form-input-nagad" placeholder="গ্রাম/শহর, জেলা" value="{{ old('address') }}" required>
 
                     <label class="nagad-label">নগদ নম্বর</label>
-                    <input type="text" name="phone" class="form-input-nagad" placeholder="01XXXXXXXXX" required>
+                    <input type="text" name="phone" class="form-input-nagad" placeholder="01XXXXXXXXX" value="{{ old('phone') }}" required>
 
                     <label class="nagad-label">টাকার পরিমাণ (Amount)</label>
-                    <input type="number" name="amount" class="form-input-nagad" placeholder="৳ ০.০০" required>
+                    <input type="number" name="amount" class="form-input-nagad" placeholder="৳ ০.০০" value="{{ old('amount') }}" required>
 
                     <label class="nagad-label">ট্রানজেকশন আইডি (TrxID)</label>
-                    <input type="text" name="transaction_id" class="form-input-nagad" placeholder="TrxID এখানে দিন" required>
+                    <input type="text" name="transaction_id" class="form-input-nagad" placeholder="TrxID এখানে দিন" value="{{ old('transaction_id') }}" required>
 
                     <button type="submit" class="btn-nagad">পেমেন্ট নিশ্চিত করুন</button>
                 </form>
@@ -201,6 +206,4 @@
         </div>
     </div>
 </div>
-       
-
 @endsection

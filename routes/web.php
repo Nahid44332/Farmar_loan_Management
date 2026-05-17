@@ -3,15 +3,27 @@
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\backend\AboutController;
 use App\Http\Controllers\backend\AchievementController;
+use App\Http\Controllers\backend\AgentController;
+use App\Http\Controllers\backend\BankPaymentController;
+use App\Http\Controllers\backend\BannerController;
+use App\Http\Controllers\backend\BkashPaymentController;
 use App\Http\Controllers\backend\CallController;
+use App\Http\Controllers\backend\ContactController;
+use App\Http\Controllers\backend\CounterController;
 use App\Http\Controllers\backend\CowController;
 use App\Http\Controllers\backend\DashboardController;
 use App\Http\Controllers\backend\FarmerController;
+use App\Http\Controllers\backend\FooterSettingController;
+use App\Http\Controllers\backend\InvestorController;
 use App\Http\Controllers\backend\MaizeController;
+use App\Http\Controllers\backend\NagatPaymentController;
 use App\Http\Controllers\backend\RiceController;
+use App\Http\Controllers\backend\RocketPaymentController;
+use App\Http\Controllers\backend\SebaController;
 use App\Http\Controllers\backend\TeamController;
 use App\Http\Controllers\backend\WhyChooseController;
 use App\Http\Controllers\backend\TestimonialController;
+use App\Http\Controllers\backend\WorkController;
 use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -47,14 +59,24 @@ Route::get('/bank', [FrontendController::class, 'bank']);
 Route::get('/contact', [FrontendController::class, 'contactUs']);
 
 Route::post('/farmer-register', [FrontendController::class, 'register'])->name('farmer.register');
+Route::post('/agent/register', [AgentController::class, 'register'])->name('agent.register');
+Route::post('/investor/register', [FrontendController::class, 'registered'])->name('investor.register');
 
 
-///AdminAuth.........
-Route::get('/admin/login', [AdminAuthController::class, 'loginForm']);
-Route::get('/admin/logout', [AdminAuthController::class, 'logOut']);
+Route::post('/bkash/payment-submit', [BkashPaymentController::class, 'storePayment'])->name('bkash.payment.submit');
+Route::post('/nagad/payment-submit', [NagatPaymentController::class, 'storePayment'])->name('nagad.payment.submit');
+Route::post('/rocket/payment-submit', [RocketPaymentController::class, 'storePayment'])->name('rocket.payment.submit');
+Route::post('/bank/payment-submit', [BankPaymentController::class, 'storePayment'])->name('bank.payment.submit');
+Route::post('/contact/submit', [ContactController::class, 'contactStore'])->name('contact.submit');
 
+
+
+
+Route::get('/admin', [AdminAuthController::class, 'loginForm'])->name('admin.login');
+Route::post('/admin/login-submit', [AdminAuthController::class, 'login'])->name('admin.login.submit');
+Route::get('/logout', [AdminAuthController::class, 'logOut'])->name('admin.logout');
 Auth::routes();
-Route::get('/dashboard', [DashboardController::class, 'adminDashbord']);
+Route::get('/dashboard', [DashboardController::class, 'adminDashbord'])->name('admin.dashboard');
 
 // ==========================================
 // Maize (ভুট্টা) Section Routes - Normal Flow
@@ -123,7 +145,18 @@ Route::get('/admin/farmer-reject/{id}', [FarmerController::class, 'reject']);
 Route::get('/admin/about-section', [AboutController::class, 'index'])->name('about.section');
 Route::post('/admin/about-section/update/{key}', [AboutController::class, 'update'])->name('about.section.update');
 
+//Service........
+Route::prefix('admin')->group(function () {
 
+    Route::get('/seba', [SebaController::class, 'index'])->name('seba.index');
+
+    Route::post('/seba/store', [SebaController::class, 'store'])->name('seba.store');
+
+    Route::post('/seba/update/{id}', [SebaController::class, 'update'])->name('seba.update');
+
+    Route::get('/seba/delete/{id}', [SebaController::class, 'destroy'])->name('seba.delete');
+
+});
 //team.....
 Route::get('/teams', [TeamController::class, 'index'])->name('team.index');
 Route::post('/teams/store', [TeamController::class, 'store'])->name('team.store');
@@ -152,3 +185,77 @@ Route::get('/admin/testimonial/delete/{id}', [TestimonialController::class, 'des
 // CTA Section Routes
 Route::get('admin/cta', [CallController::class, 'index'])->name('cta.index');
 Route::post('admin/cta/update', [CallController::class, 'update'])->name('cta.update');
+
+//Agent....
+Route::prefix('admin/agent')->group(function () {
+    Route::get('/membership', [AgentController::class, 'membershipRequests'])->name('admin.agent.membership');
+    Route::get('/list', [AgentController::class, 'agentList'])->name('admin.agent.list');
+    Route::post('/approve/{id}', [AgentController::class, 'approve'])->name('admin.agent.approve');
+    Route::post('/suspend/{id}', [AgentController::class, 'suspend'])->name('admin.agent.suspend');
+
+});
+//Investor.......
+Route::prefix('admin/investor')->group(function () {
+    Route::get('/membership', [InvestorController::class, 'membershipRequests'])->name('admin.investor.membership');
+    Route::get('/list', [InvestorController::class, 'agentList'])->name('admin.investor.list');
+    Route::post('/approve/{id}', [InvestorController::class, 'approve'])->name('admin.investor.approve');
+    Route::post('/suspend/{id}', [InvestorController::class, 'suspend'])->name('admin.investor.suspend');
+});
+
+//Bkash.....
+Route::prefix('admin/bkash')->group(function () {
+    Route::get('/membership', [BkashPaymentController::class, 'pendingList'])->name('admin.bkash.membership');
+    Route::get('/list', [BkashPaymentController::class, 'approvedList'])->name('admin.bkash.list');
+    Route::post('/approve/{id}', [BkashPaymentController::class, 'approve'])->name('admin.bkash.approve');
+});
+
+//Nagat.......
+Route::prefix('admin/payment/nagad')->group(function () {
+    Route::get('/membership', [NagatPaymentController::class, 'pendingList'])->name('admin.nagad.membership');
+    Route::get('/list', [NagatPaymentController::class, 'approvedList'])->name('admin.nagad.list');
+    Route::post('/approve/{id}', [NagatPaymentController::class, 'approve'])->name('admin.nagad.approve');
+});
+
+//Rocket......
+Route::prefix('admin/payment/rocket')->group(function () {
+    Route::get('/membership', [RocketPaymentController::class, 'pendingList'])->name('admin.rocket.membership');
+    Route::get('/list', [RocketPaymentController::class, 'approvedList'])->name('admin.rocket.list');
+    Route::post('/approve/{id}', [RocketPaymentController::class, 'approve'])->name('admin.rocket.approve');
+});
+
+//Bank...
+Route::prefix('admin/payment/bank')->group(function () {
+    Route::get('/membership', [BankPaymentController::class, 'pendingList'])->name('admin.bank.membership');
+    Route::get('/list', [BankPaymentController::class, 'approvedList'])->name('admin.bank.list');
+    Route::post('/approve/{id}', [BankPaymentController::class, 'approve'])->name('admin.bank.approve');
+});
+
+//Contact......
+Route::middleware(['auth'])->prefix('admin/messages')->group(function () {
+    Route::get('/', [ContactController::class, 'index'])->name('admin.messages.index');
+    Route::get('/view/{id}', [ContactController::class, 'show'])->name('admin.messages.show');
+    Route::delete('/delete/{id}', [ContactController::class, 'destroy'])->name('admin.messages.destroy');
+    Route::post('/admin/messages/{id}/mark-as-read', [ContactController::class, 'markAsRead'])->name('admin.messages.markAsRead');
+});
+
+Route::middleware(['auth'])->group(function () {
+    // Banner Section Dynamic Routes
+    Route::get('/admin/banner-section', [BannerController::class, 'index'])->name('banner.section');
+    Route::post('/admin/banner-section/update/{key}', [BannerController::class, 'update'])->name('banner.section.update');
+
+    // Counter Section Dynamic Routes
+    Route::get('/admin/counter-section', [CounterController::class, 'index'])->name('counter.section');
+Route::post('/admin/counter-section/update', [CounterController::class, 'update'])->name('counter.update');});
+
+//Setting....
+Route::prefix('admin')->group(function () {
+
+    Route::get('/footer-settings', [FooterSettingController::class, 'index'])->name('footer.index');
+
+    Route::post('/footer-settings/update', [FooterSettingController::class, 'update'])->name('footer.update');
+
+});
+
+//Blog.......
+Route::get('/admin/work-section', [WorkController::class, 'index'])->name('work.index');
+Route::post('/admin/work-section/update', [WorkController::class, 'update'])->name('work.update');

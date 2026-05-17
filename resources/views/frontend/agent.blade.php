@@ -273,39 +273,47 @@
                   <h5 class="modal-title">Agent Recruitment Form</h5>
                   <button type="button" class="close" data-dismiss="modal" style="color: #fff;">&times;</button>
                </div>
-               <form>
-                  <div class="modal-body">
-                     <div class="row">
-                        <div class="col-md-6 form-group">
-                           <label>Full Name</label>
-                           <input type="text" class="form-control" placeholder="Enter Name" required>
-                        </div>
-                        <div class="col-md-6 form-group">
-                           <label>Phone Number</label>
-                           <input type="text" class="form-control" placeholder="01XXXXXXXXX" required>
-                        </div>
-                        <div class="col-md-6 form-group">
-                           <label>Working Area (District)</label>
-                           <input type="text" class="form-control" placeholder="e.g. Bogra, Rajshahi" required>
-                        </div>
-                        <div class="col-md-6 form-group">
-                           <label>Experience (Years)</label>
-                           <input type="number" class="form-control" placeholder="Years of experience">
-                        </div>
-                        <div class="col-md-12 form-group">
-                           <label>Upload NID/ID Proof</label>
-                           <input type="file" class="form-control" style="padding: 5px;">
-                        </div>
-                        <div class="col-md-12 form-group">
-                           <label>Create Password</label>
-                           <input type="password" class="form-control" placeholder="Min 6 characters" required>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="modal-footer">
-                     <button type="submit" class="btn" style="background: #85A900; color: #fff; border-radius: 25px; padding: 10px 40px; border:none;">Apply to Join</button>
-                  </div>
-               </form>
+                 @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+               <form action="{{ route('agent.register') }}" method="POST" enctype="multipart/form-data">
+    
+    @csrf
+  
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label>Full Name</label>
+                <input type="text" name="name" class="form-control" placeholder="Enter Name" required value="{{ old('name') }}">
+            </div>
+            <div class="col-md-6 form-group">
+                <label>Phone Number</label>
+                <input type="text" name="phone" class="form-control" placeholder="01XXXXXXXXX" required value="{{ old('phone') }}">
+            </div>
+            <div class="col-md-6 form-group">
+                <label>Working Area (District)</label>
+                <input type="text" name="district" class="form-control" placeholder="e.g. Bogra, Rajshahi" required value="{{ old('district') }}">
+            </div>
+            <div class="col-md-6 form-group">
+                <label>Experience (Years)</label>
+                <input type="number" name="experience" class="form-control" placeholder="Years of experience" value="{{ old('experience') }}">
+            </div>
+            <div class="col-md-12 form-group">
+                <label>Upload NID/ID Proof</label>
+                <input type="file" name="nid_proof" class="form-control" style="padding: 5px;">
+            </div>
+            <div class="col-md-12 form-group">
+                <label>Create Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Min 6 characters" required>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn" style="background: #85A900; color: #fff; border-radius: 25px; padding: 10px 40px; border:none;">Apply to Join</button>
+    </div>
+</form>
             </div>
          </div>
       </div>

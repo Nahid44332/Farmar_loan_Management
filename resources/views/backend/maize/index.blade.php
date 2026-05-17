@@ -360,7 +360,7 @@
 
                                  <input type="file" name="image" class="form-control">
 
-                                 <img src="{{ asset($about->image) }}" class="preview_img">
+                                 <img src="{{ asset('backend/images/service/'. $about->image) }}" class="preview_img">
 
                              </div>
 
