@@ -296,75 +296,103 @@
 
 
             <div class="modal fade" id="registerModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background: #85A900; color: #fff;">
-                            <h5 class="modal-title">Farmer Registration & Loan Application</h5>
-                            <button type="button" class="close" data-dismiss="modal" style="color: #fff;">&times;</button>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #85A900; color: #fff;">
+                <h5 class="modal-title">Farmer Registration & Loan Application</h5>
+                <button type="button" class="close" data-dismiss="modal" style="color: #fff;">&times;</button>
+            </div>
+            <form action="{{ route('farmer.register') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Full Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="Enter Full Name" required>
                         </div>
-                        <form action="{{ route('farmer.register') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-md-6 form-group">
-                                        <label>Full Name</label>
-                                        <input type="text" name="name" class="form-control"
-                                            placeholder="Enter Full Name" required>
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label>Phone Number</label>
-                                        <input type="text" name="phone" class="form-control" placeholder="017XXXXXXXX"
-                                            required>
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label>NID Number</label>
-                                        <input type="text" name="nid" class="form-control"
-                                            placeholder="National ID Card Number" required>
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label>Amount of Land (Decimals)</label>
-                                        <input type="number" name="land_amount" class="form-control" placeholder="e.g. 50">
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label>Loan Amount Needed (Tk)</label>
-                                        <input type="number" name="loan_amount" class="form-control"
-                                            placeholder="e.g. 50000" required>
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label>Farming Category</label>
-                                        <select name="category" class="form-control" required>
-                                            <option value="" disabled selected>Select Category</option>
-                                            <option value="crop">Crop Farming</option>
-                                            <option value="poultry">Poultry</option>
-                                            <option value="fishery">Fishery</option>
-                                            <option value="dairy">Dairy</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-12 form-group">
-                                        <label>Farmer's Profile Image</label>
-                                        <input type="file" name="farmer_image" class="form-control" accept="image/*"
-                                            style="padding: 5px;">
-                                    </div>
-                                    <div class="col-md-12 form-group">
-                                        <label>Full Address</label>
-                                        <textarea name="address" class="form-control" rows="2" placeholder="Village, Upazila, District" required></textarea>
-                                    </div>
-                                    <div class="col-md-12 form-group">
-                                        <label>Password</label>
-                                        <input type="password" name="password" class="form-control"
-                                            placeholder="Create a password" required>
-                                    </div>
+                        <div class="col-md-6 form-group">
+                            <label>Phone Number</label>
+                            <input type="text" name="phone" class="form-control" placeholder="017XXXXXXXX" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>NID Number</label>
+                            <input type="number" name="nid" class="form-control" placeholder="National ID Card Number" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Amount of Land (Decimals)</label>
+                            <input type="number" name="land_amount" class="form-control" placeholder="e.g. 50">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Loan Duration (Months)</label>
+                            <select id="modal_loan_duration" name="loan_duration" class="form-control" required>
+                                <option value="" disabled selected>Select Duration</option>
+                                <option value="3">৩ মাস (3 Months)</option>
+                                <option value="6">৬ মাস (6 Months)</option>
+                                <option value="9">৯ মাস (9 Months)</option>
+                                <option value="12">১২ মাস / ১ বছর (12 Months)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Loan Amount Needed (Tk)</label>
+                            <input type="number" id="modal_loan_amount" name="loan_amount" class="form-control" placeholder="e.g. 50000" required>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>Farming Category</label>
+                            <select name="category" class="form-control" required>
+                                <option value="" disabled selected>Select Category</option>
+                                <option value="crop">Crop Farming</option>
+                                <option value="poultry">Poultry</option>
+                                <option value="fishery">Fishery</option>
+                                <option value="dairy">Dairy</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12 form-group" id="live_calc_box" style="display: none;">
+                            <div style="background: #f4f9f1; border: 1px solid #d4e6cc; border-radius: 12px; padding: 15px; margin-bottom: 10px;">
+                                <h6 style="color: #556b2f; font-weight: bold; margin-bottom: 10px; font-size: 14px;">
+                                    <i class="fa-solid fa-calculator"></i> আনুমানিক লোনের হিসাব (<span id="live_duration" style="font-weight: bold; color: #85A900;">0</span> মাস মেয়াদে)
+                                </h6>
+                                <div style="display: flex; justify-content: space-between; font-size: 13px; color: #555; margin-bottom: 5px;">
+                                    <span>বার্ষিক সুদের হার:</span>
+                                    <span style="font-weight: bold; color: #333;">৭% (সরকারি অনুদান)</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-size: 13px; color: #555; margin-bottom: 5px;">
+                                    <span>সর্বমোট পরিশোধযোগ্য টাকা:</span>
+                                    <span style="font-weight: bold; color: #333;">৳<span id="live_total_payable">0.00</span></span>
+                                </div>
+                                <hr style="border-top: 1px dashed #c0dcbc; margin: 8px 0;">
+                                <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: bold; color: #85A900;">
+                                    <span>মাসিক কিস্তি:</span>
+                                    <span>৳<span id="live_monthly_installment">0.00</span> / মাস</span>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn"
-                                    style="background: #85A900; color: #fff; border-radius: 25px; padding: 10px 40px;">Apply
-                                    & Register</button>
-                            </div>
-                        </form>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label>Farmer's Profile Image</label>
+                            <input type="file" name="farmer_image" class="form-control" accept="image/*" style="padding: 5px;">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label>Full Address</label>
+                            <textarea name="address" class="form-control" rows="2" placeholder="Village, Upazila, District" required></textarea>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label>Password</label>
+                            <input type="password" name="password" class="form-control" placeholder="Create a password" required>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn" style="background: #85A900; color: #fff; border-radius: 25px; padding: 10px 40px;">
+                        Apply & Register
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
             <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -375,15 +403,18 @@
                                 <span aria-hidden="true" style="color: #fff;">&times;</span>
                             </button>
                         </div>
-                        <form action="#" method="POST">
+                        <form action="{{ route('farmer.login.submit') }}" method="POST">
+                            @csrf
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label>Phone Number</label>
-                                    <input type="text" class="form-control" placeholder="017XXXXXXXX" required>
+                                    <input type="text" name="phone" class="form-control" placeholder="017XXXXXXXX"
+                                        required>
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input type="password" class="form-control" placeholder="Enter Password" required>
+                                    <input type="password" name="password" class="form-control"
+                                        placeholder="Enter Password" required>
                                 </div>
                             </div>
                             <div class="modal-footer border-0">
@@ -452,3 +483,40 @@
         </div>
     </div>
 @endsection
+@push('script')
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const loanInput = document.getElementById('modal_loan_amount');
+        const durationSelect = document.getElementById('modal_loan_duration');
+        const calcBox = document.getElementById('live_calc_box');
+        const durationSpan = document.getElementById('live_duration');
+        const totalPayableSpan = document.getElementById('live_total_payable');
+        const monthlyInstallmentSpan = document.getElementById('live_monthly_installment');
+
+        const interestRate = 0.07; 
+
+        function calculateLoan() {
+            const amount = parseFloat(loanInput.value);
+            const duration = parseInt(durationSelect.value);
+
+            if (isNaN(amount) || amount <= 0 || isNaN(duration) || duration <= 0) {
+                calcBox.style.display = 'none';
+                return;
+            }
+
+            const totalPayable = amount + (amount * interestRate);
+            const monthlyInstallment = totalPayable / duration;
+
+            // ডাটাগুলো আপডেট করা
+            if(durationSpan) durationSpan.textContent = duration;
+            if(totalPayableSpan) totalPayableSpan.textContent = totalPayable.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            if(monthlyInstallmentSpan) monthlyInstallmentSpan.textContent = monthlyInstallment.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            calcBox.style.display = 'block';
+        }
+
+        loanInput.addEventListener('input', calculateLoan);
+        durationSelect.addEventListener('change', calculateLoan);
+    });
+</script>
+@endpush
