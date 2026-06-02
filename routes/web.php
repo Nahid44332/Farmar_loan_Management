@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\backend\AboutController;
 use App\Http\Controllers\backend\AchievementController;
+use App\Http\Controllers\backend\agent\AgentDashboardController;
 use App\Http\Controllers\backend\AgentController;
 use App\Http\Controllers\backend\BankPaymentController;
 use App\Http\Controllers\backend\BannerController;
@@ -12,6 +13,8 @@ use App\Http\Controllers\backend\ContactController;
 use App\Http\Controllers\backend\CounterController;
 use App\Http\Controllers\backend\CowController;
 use App\Http\Controllers\backend\DashboardController;
+use App\Http\Controllers\backend\Farmer\FarmerDashboardController;
+use App\Http\Controllers\backend\FarmerAuthController;
 use App\Http\Controllers\backend\FarmerController;
 use App\Http\Controllers\backend\FooterSettingController;
 use App\Http\Controllers\backend\InvestorController;
@@ -48,9 +51,13 @@ Route::get('/about', [FrontendController::class, 'aboutUs']);
 Route::get('/loan/{id}', [FrontendController::class, 'Loan']);
 Route::get('/rice-loan', [FrontendController::class, 'riceLoan']);
 Route::get('/cow-loan', [FrontendController::class, 'cowLoan']);
-Route::get('/farmer', [FrontendController::class, 'farmer']);
+Route::get('/farmer', [FrontendController::class, 'farmer'])->name('farmer.login');
+Route::post('/farmer/login/submit', [FrontendController::class, 'login'])->name('farmer.login.submit');
+Route::post('/farmer/logout', [FarmerAuthController::class, 'logout'])->name('farmer.logout');
 Route::get('/invesment', [FrontendController::class, 'invesment']);
-Route::get('/agent', [FrontendController::class, 'agent']);
+Route::get('/agent', [FrontendController::class, 'agent'])->name('agent');
+Route::post('/agent/login/submit', [FrontendController::class, 'agentLogin'])->name('agent.login');
+Route::get('/agent/logout', [FrontendController::class, 'logoutAgent'])->name('agent.logout');
 Route::get('/admin', [FrontendController::class, 'admin']);
 Route::get('/bkash', [FrontendController::class, 'bkash']);
 Route::get('/nagad', [FrontendController::class, 'nagad']);
@@ -140,6 +147,9 @@ Route::get('/admin/farmers', [FarmerController::class, 'index']);
 Route::get('/admin/farmers/approved', [FarmerController::class, 'approvedList']);
 Route::get('/admin/farmer-approve/{id}', [FarmerController::class, 'approve']);
 Route::get('/admin/farmer-reject/{id}', [FarmerController::class, 'reject']);
+Route::get('/admin/pending-payments', [FarmerController::class, 'pendingPayments'])->name('admin.payments.pending');
+Route::post('/admin/payments/{id}/approve', [FarmerController::class, 'approvePayment'])->name('admin.payments.approve');
+Route::get('/admin/farmers/field-Verification', [FarmerController::class, 'FieldVerification']); 
 
 //About......
 Route::get('/admin/about-section', [AboutController::class, 'index'])->name('about.section');
@@ -192,6 +202,7 @@ Route::prefix('admin/agent')->group(function () {
     Route::get('/list', [AgentController::class, 'agentList'])->name('admin.agent.list');
     Route::post('/approve/{id}', [AgentController::class, 'approve'])->name('admin.agent.approve');
     Route::post('/suspend/{id}', [AgentController::class, 'suspend'])->name('admin.agent.suspend');
+    Route::post('/assign-farmer', [AgentController::class, 'assignFarmer'])->name('admin.agent.assign.farmer');
 
 });
 //Investor.......
@@ -259,3 +270,24 @@ Route::prefix('admin')->group(function () {
 //Blog.......
 Route::get('/admin/work-section', [WorkController::class, 'index'])->name('work.index');
 Route::post('/admin/work-section/update', [WorkController::class, 'update'])->name('work.update');
+
+
+
+//===========Farmer Panel========//
+Route::middleware('auth:farmer')->group(function () {
+    Route::get('/farmer/dashboard', [FarmerDashboardController::class, 'index'])->name('farmer.dashboard');
+    Route::get('/farmer/profile', [FarmerDashboardController::class, 'profile'])->name('farmer.profile');
+    Route::post('/farmer/profile/update', [FarmerDashboardController::class, 'updateProfile']);
+    Route::post('/farmer/profile/update-password', [FarmerDashboardController::class, 'updatePassword']);
+    Route::post('/farmer/profile/update-image', [FarmerDashboardController::class, 'updateImage']);
+    Route::get('/farmer/loan', [FarmerDashboardController::class, 'farmerLoan']);
+    Route::get('/farmer/payments', [FarmerDashboardController::class, 'farmerPaymennts']);
+    Route::post('/farmer/payments/store', [FarmerDashboardController::class, 'storePayment'])->name('farmer.payments.store');
+});
+
+//===========Agnet Panel=============//
+Route::middleware('auth:agent')->group(function () {
+    Route::get('/agent/dashboard', [AgentDashboardController::class, 'dashboard'])->name('agent.dashboard');
+    Route::get('/agent/investigation', [AgentDashboardController::class, 'investigationPage'])->name('investigation.index');
+    Route::post('/agent/investigation/store', [AgentDashboardController::class, 'storeInvestigation'])->name('investigation.store');
+});

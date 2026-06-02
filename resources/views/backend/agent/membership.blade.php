@@ -46,7 +46,7 @@
                     </td>
                     <td class="px-6 py-4">
                         @if($agent->nid_proof)
-                            <a href="{{ asset('uploads/agents/'.$agent->nid_proof) }}" target="_blank" class="text-emerald-500 hover:underline text-sm font-medium">
+                            <a href="{{ asset('backend/images/agent/'.$agent->nid_proof) }}" target="_blank" class="text-emerald-500 hover:underline text-sm font-medium">
                                 <i class="fa fa-file-pdf mr-1"></i> View NID
                             </a>
                         @else

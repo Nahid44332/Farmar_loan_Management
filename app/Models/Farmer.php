@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+// ১. মামা, এই লাইনটি অবশ্যই থাকতে হবে
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
-class Farmer extends Model
+// ২. এখানে Model এর জায়গায় Authenticatable হবে
+class Farmer extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
-      protected $fillable = [
-
+    // আপনার বাকি কোড (যেমন $fillable) যা আছে তাই থাকবে
+    protected $fillable = [
         'name',
         'phone',
         'nid',
@@ -21,6 +24,18 @@ class Farmer extends Model
         'address',
         'password',
         'status',
-
+        'loan_duration',       // এটি অবশ্যই থাকতে হবে
+        'monthly_installment', // এটি অবশ্যই থাকতে হবে
+        'agent_id'
     ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    public function investigations()
+    {
+        return $this->hasMany(FieldInvestigation::class, 'farmer_id');
+    }
 }

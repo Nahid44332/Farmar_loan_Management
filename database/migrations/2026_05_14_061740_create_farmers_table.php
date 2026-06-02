@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('farmers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('agent_id')->nullable();
             $table->string('name');
             $table->string('phone')->unique();
             $table->string('nid')->unique();
             $table->string('land_amount')->nullable();
             $table->string('loan_amount');
+            $table->integer('loan_duration')->nullable();
+            $table->decimal('monthly_installment', 10, 2)->nullable();
             $table->string('category');
             $table->string('image')->nullable();
             $table->text('address');

@@ -326,13 +326,14 @@
                   <h5 class="modal-title">Agent Dashboard Login</h5>
                   <button type="button" class="close" data-dismiss="modal" style="color: #fff;">&times;</button>
                </div>
-               <form>
+               <form action="{{route('agent.login')}}" method="POST">
+                  @csrf
                   <div class="modal-body">
                      <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Phone or Email" required>
+                        <input type="text" name="phone" class="form-control" placeholder="Phone or Email" required>
                      </div>
                      <div class="form-group">
-                        <input type="password" class="form-control" placeholder="Password" required>
+                        <input type="password" name="password" class="form-control" placeholder="Password" required>
                      </div>
                   </div>
                   <div class="modal-footer">
